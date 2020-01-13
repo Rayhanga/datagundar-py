@@ -105,7 +105,7 @@ _Simplified_:
 import datagundar as dg
 
 # Get a python dict of both data and meta
-2ia18 = dg.jadwalKelas("2ia18")
+jadwal = dg.jadwalKelas("2ia18")
 
 # Output:
 # {
