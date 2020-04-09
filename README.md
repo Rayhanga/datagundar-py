@@ -6,20 +6,26 @@ Data Gundar is a collection of Python modules to scrap and process data from Gun
 
 ## Installation
 
-Install depedencies:
+Install `virtualenv`:
 
 ```bash
-pipenv install
+pip install virtualenv
+```
+
+Create new `virtualenv` and install depedencies:
+
+```bash
+virtualenv venv &&
+. venv/bin/activate && 
+pip install -r requirements.txt
 ```
 
 ## Usage
 
-Always use `pipenv` when interacting with these modules
+Always use `virtualenv` when interacting with these modules
 
 ```bash
-pipenv run python # run python interactive mode inside pipenv environment
-
-pipenv shell # run terminal in pipenv environment
+. venv/bin/activate
 ```
 
 Get schedule for selected `kelas` using `jadwal` module
