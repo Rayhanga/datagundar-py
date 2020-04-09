@@ -4,7 +4,7 @@ import mechanize
 br = mechanize.Browser()
 br.set_handle_robots(False)
 
-def httpgetsoup(url, f_para, f_input):
+def httpgetsoup(url, f_para="", f_input=""):
     br.open(url+'?'+f_para+'='+f_input)
     return bs(br.response().read(), "html5lib") 
 
