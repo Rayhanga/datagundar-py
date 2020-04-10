@@ -20,20 +20,20 @@ def jadwalKelas(kelas, force_update=False):
         # print("Searching Archive")
         json_data = archiver.getArchiveData(data_tag, jad_path)
         staged_data = json.loads(json_data['data'])
-        matkul = staged_data['matkul']
+        jadkul = staged_data['jadkul']
         meta = staged_data['meta']
     except:
         # print("Getting Data from web")
-        matkul = jadwal.cipetjadwal(kelas)
+        jadkul = jadwal.cipetjadwal(kelas)
         meta = jadwal.cipetmeta(kelas)
         staged_data = {
-            "matkul": matkul,
+            "jadkul": jadkul,
             "meta": meta
         }
         archiver.postArchiveData(staged_data, data_tag, jad_path)
 
     return {
-        "matkul": matkul,
+        "jadkul": jadkul,
         "meta": meta
     }
 
