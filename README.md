@@ -27,52 +27,55 @@ Always use `virtualenv` when interacting with these modules
 ```bash
 . venv/bin/activate
 ```
-
-Get schedule for selected `kelas` using `jadwal` module
+### jadwalKelas
+Get schedule for selected `kelas` using `jadwalKelas` module
 
 ```python
-from datagundar.data import jadwal
+import datagundar
 
-jadwal.cipetjadwal(kelas) # returns an array of schedule for selected kelas
-jadwal.cipetmeta(kelas) # returns an array of meta for selected kelas schedules
+datagundar.jadwalKelas(kelas)
+# returns a python dict of selected kelas
 ```
 
 Expected Output:
 
 ```python
-# datagundar.data.jadwal.cipetjadwal()
-[
-    {
-        "hari": ...,
-        "matkul": ...,
-        "jam": ...,
-        "ruangan": ...,
-        "dosen": ....
-    },
-    ....
-]
-
-# datagundar.data.jadwal.cipetmeta()
+# datagundar.jadwalKelas([Kelas])
 {
-    "kelas": ...,
-    "semester": ...,
-    "tahun": ...,
-    "berlaku_mulai": ....
+    "jadkul": [
+        {
+            "hari": ...,
+            "matkul": ...,
+            "jam": ...,
+            "ruangan": ...,
+            "dosen": ....
+        },
+        ....
+    ],
+    "meta": {
+        "kelas": ...,
+        "semester": ...,
+        "tahun": ...,
+        "berlaku_mulai": ....
+    }
 }
 ```
 
-Get sap for selected `jurusan` using `sap` module
+### sapJurusan
+
+Get sap for selected `jurusan` using `sapJurusan` module
 
 ```python
-from datagundar.data import sap
+import datagundar
 
-jur = sap.getmajorfromlist(jurusan) # returns a python dict of selected jurusan
+jur = datagundar.sapJurusan(jurusan) 
+# returns a python dict of selected jurusan
 ```
 
 Expected Output:
 
 ```python
-# datagundar.data.sap.getmajorfromlist()
+# datagundar.sapJurusan([NamaLengkapJurusan])
 {
     "nama": ...,
     "url_value": ...,
@@ -81,7 +84,9 @@ Expected Output:
         {
             "judul": ...,
             "kode": ...,
-            "detail_url": ...,
+            "wajib": [True / False],
+            "semester": ...,
+            "jenis": "UTAMA" / "LOKAL",
             "download_link":....
         },
         ....
@@ -89,23 +94,7 @@ Expected Output:
 }
 ```
 
-*Example:*
-
-```python
-from datagundar.data import jurusan, sap
-
-# Get an array of schedule for 2ia18
-jadwal_2ia18 = jadwal.cipetjadwal("2ia18")
-
-# Get an array of meta for 2ia18 schedule
-jadwal.cipetmeta("2ia18")
-
-# Get Teknik Informatika meta and sap list as Python Dictionary
-# And assign it to variable called TI
-TI = sap.getmajorfromlist("Teknik Informatika")
-```
-
-_Simplified_:
+_Example_:
 
 ```python
 import datagundar as dg
@@ -115,12 +104,29 @@ jadwal = dg.jadwalKelas("2ia18")
 
 # Output:
 # {
-#   "data": jadwal,
-#   "meta": meta
+#   "jadkul": ...,
+#   "meta": ...
 # }
 
 # Get Teknik Informatika sap data and meta as a python dict
 TI = dg.sapJurusan("Teknik Informatika")
+
+# Output:
+# {
+#     "nama": ...,
+#     "url_value": ...,
+#     "jenjang": ...,
+#     "matkul": [
+#         {
+#             "judul": ...,
+#             "kode": ...,
+#             "wajib": [True / False],
+#             "semester": ...,
+#             "jenis": "UTAMA" / "LOKAL",
+#             "download_link":....
+#         },
+#         ....
+#     ]
 ```
 
 ## Contributing
