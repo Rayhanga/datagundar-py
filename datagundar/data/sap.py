@@ -37,9 +37,26 @@ def cipetsaplist(major):
     iterlist_table = iter(table)
     next(iterlist_table)
     for x in iterlist_table:
+        judul = x.findChildren("td")[1].getText()
+        kode = x.findChildren("td")[0].getText()
+        download_link = x.findChildren("td")[2].findChildren("a")[1]['href']
+        detail_param = x.findChildren("td")[2].findChildren("a")[0]['href'].replace("?stateid=", "")
+
+        detailSoup = scrapper.httpgetsoup(url, url_para, detail_param)
+        details=detailSoup.find("table", {"width": "90%"}).find("tbody").findChildren("td")
+        details=details[5:-8]
+    
+        jenis = "UTAMA"
+        if "Lokal" in details[1].text:
+            jenis = "LOKAL"
+        wajib = "Wajib" in details[3].text
+        semester = details[5].text[-1:]
+
         major['matkul'].append({
-            'judul' : x.findChildren("td")[1].getText(),
-            'kode' : x.findChildren("td")[0].getText(),
-            'detail_url' : x.findChildren("td")[2].findChildren("a")[0]['href'].replace("?stateid=", ""),
-            'download_link' : x.findChildren("td")[2].findChildren("a")[1]['href']
+            'judul' : judul,
+            'kode' : kode,
+            'wajib' : wajib,
+            'semester': semester,
+            'jenis': jenis,
+            'download_link' : download_link
         })
