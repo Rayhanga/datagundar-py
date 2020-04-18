@@ -1,6 +1,6 @@
 # Data Gundar
 
-Data Gundar is a collection of Python modules to scrap and process data from Gunadarma's Website without any hassle.
+Data Gundar is a Python module to scrap and process data from Gunadarma's Website without any hassle.
 
 ***Disclaimer***: This modules ignore robots.txt, _use it at your own risk_.
 
