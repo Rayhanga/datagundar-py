@@ -1,4 +1,5 @@
-import hashlib, shutil, json
+import hashlib
+import json
 
 def postArchiveData(data, data_tag, archive_path):
     json_data=json.dumps(data)

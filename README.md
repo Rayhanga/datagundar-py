@@ -2,8 +2,6 @@
 
 Data Gundar is a Python module to scrap and process data from Gunadarma's Website without any hassle.
 
-***Disclaimer***: This modules ignore robots.txt, _use it at your own risk_.
-
 ## Installation
 
 Install `virtualenv`:
@@ -14,120 +12,51 @@ pip install virtualenv
 
 Create new `virtualenv` and install depedencies:
 
-```bash
-virtualenv venv &&
-. venv/bin/activate && 
-pip install -r requirements.txt
-```
+- Windows:
+
+    ```
+    virtualenv venv
+    venv\Scripts\activate &&
+    pip install -r requirements.txt
+    ```
+
+- Linux / MacOS:
+
+    ```bash
+    virtualenv venv &&
+    . venv/bin/activate && 
+    pip install -r requirements.txt
+    ```
+
+Install `geckodriver`
+
+- Windows:
+
+  - Download latest `geckodriver.exe` from [here](https://github.com/mozilla/geckodriver/releases/).
+  - Unzip and move / copy `geckodriver.exe` into your `venv\Scripts\` folder.
+
+- Linux / MacOS:
+
+  - Download latest `geckodriver` from [here](https://github.com/mozilla/geckodriver/releases/).
+  - Untar and move / copy `geckodriver` into your `/usr/bin` or any other directory inside `PATH`.
 
 ## Usage
 
 Always use `virtualenv` when interacting with these modules
 
-```bash
-. venv/bin/activate
-```
-### jadwalKelas
-Get schedule for selected `kelas` using `jadwalKelas` module
+- Windows:
 
-```python
-import datagundar
+  ```
+  venv\Scripts\activate
+  ```
 
-datagundar.jadwalKelas(kelas)
-# returns a python dict of selected kelas
-```
+- Linux / MacOS:
 
-Expected Output:
+  ```bash
+  . venv/bin/activate
+  ```
 
-```python
-# datagundar.jadwalKelas([Kelas])
-{
-    "jadkul": [
-        {
-            "hari": ...,
-            "matkul": ...,
-            "jam": ...,
-            "ruangan": ...,
-            "dosen": ....
-        },
-        ....
-    ],
-    "meta": {
-        "kelas": ...,
-        "semester": ...,
-        "tahun": ...,
-        "berlaku_mulai": ....
-    }
-}
-```
-
-### sapJurusan
-
-Get sap for selected `jurusan` using `sapJurusan` module
-
-```python
-import datagundar
-
-jur = datagundar.sapJurusan(jurusan) 
-# returns a python dict of selected jurusan
-```
-
-Expected Output:
-
-```python
-# datagundar.sapJurusan([NamaLengkapJurusan])
-{
-    "nama": ...,
-    "url_value": ...,
-    "jenjang": ...,
-    "matkul": [
-        {
-            "judul": ...,
-            "kode": ...,
-            "wajib": [True / False],
-            "semester": ...,
-            "jenis": "UTAMA" / "LOKAL",
-            "download_link":....
-        },
-        ....
-    ]
-}
-```
-
-_Example_:
-
-```python
-import datagundar as dg
-
-# Get a python dict of both data and meta
-jadwal = dg.jadwalKelas("2ia18")
-
-# Output:
-# {
-#   "jadkul": ...,
-#   "meta": ...
-# }
-
-# Get Teknik Informatika sap data and meta as a python dict
-TI = dg.sapJurusan("Teknik Informatika")
-
-# Output:
-# {
-#     "nama": ...,
-#     "url_value": ...,
-#     "jenjang": ...,
-#     "matkul": [
-#         {
-#             "judul": ...,
-#             "kode": ...,
-#             "wajib": [True / False],
-#             "semester": ...,
-#             "jenis": "UTAMA" / "LOKAL",
-#             "download_link":....
-#         },
-#         ....
-#     ]
-```
+<!-- Write basic usage or something here -->
 
 ## Contributing
 
