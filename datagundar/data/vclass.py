@@ -180,11 +180,14 @@ class Vclass(Proxy):
                 activity_list = topic['topicActivities']
                 if activity_list:
                     for activity in activity_list:
-                        if not activity['actComplete'] and activity['actType'] != 'File':
-                            activity['actTitle'] = activity['actTitle'] + ' ({})'.format(course['courseName'])
-                            upcoming_tasks.append(self.getActDeadline(activity))
-
-        upcoming_tasks = sorted(upcoming_tasks, key=lambda k: k['actDeadline'])
+                        if not activity['actComplete']:
+                            if not(activity['actType'] == 'File' or activity['actType'] == 'Chat'):
+                                activity['actTitle'] = activity['actTitle'] + ' ({})'.format(course['courseName'])
+                                upcoming_tasks.append(self.getActDeadline(activity))
+        try:
+            upcoming_tasks = sorted(upcoming_tasks, key=lambda k: k['actDeadline'])
+        except:
+            print(f'Problem on sorting the course list!')
 
         return upcoming_tasks
 
