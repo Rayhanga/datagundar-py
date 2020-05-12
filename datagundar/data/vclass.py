@@ -187,8 +187,14 @@ class Vclass(Proxy):
         try:
             upcoming_tasks = sorted(upcoming_tasks, key=lambda k: k['actDeadline'])
         except:
-            print(f'Problem on sorting the course list!')
+            temp = []
+            for i, task in enumerate(upcoming_tasks):
+                if task['actDeadline'] == None:
+                    temp.append(task)
+                    del upcoming_tasks[i]
 
+            upcoming_tasks = sorted(upcoming_tasks, key=lambda k: k['actDeadline']) + temp
+            
         return upcoming_tasks
 
     def getCourseData(self):
