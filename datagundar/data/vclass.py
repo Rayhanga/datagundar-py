@@ -173,7 +173,7 @@ class Vclass(Proxy):
 
     def getUpcomingTasks(self):
         courses = self.getCourseData()
-        upcoming_tasks = []
+        res = []
         for course in courses:
             topic_list = course['courseTopics']
             for topic in topic_list[1:]:
@@ -183,19 +183,17 @@ class Vclass(Proxy):
                         if not activity['actComplete']:
                             if not(activity['actType'] == 'File' or activity['actType'] == 'Chat'):
                                 activity['actTitle'] = activity['actTitle'] + ' ({})'.format(course['courseName'])
-                                upcoming_tasks.append(self.getActDeadline(activity))
+                                res.append(self.getActDeadline(activity))
         try:
-            upcoming_tasks = sorted(upcoming_tasks, key=lambda k: k['actDeadline'])
+            res = sorted(res, key=lambda k: k['actDeadline'])
         except:
             temp = []
-            for i, task in enumerate(upcoming_tasks):
-                if task['actDeadline'] == None:
+            for i, task in enumerate(res):
+                if not task['actDeadline']:
                     temp.append(task)
-                    del upcoming_tasks[i]
-
-            upcoming_tasks = sorted(upcoming_tasks, key=lambda k: k['actDeadline']) + temp
+            res = sorted([a for a in res if a not in temp], key=lambda k: k['actDeadline']) + temp
             
-        return upcoming_tasks
+        return res
 
     def getCourseData(self):
         courses = self.getCourseList()
