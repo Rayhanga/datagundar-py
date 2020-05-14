@@ -1,5 +1,6 @@
 from datagundar.data.vclass import Vclass
 from datagundar.data.jadwal import Jadwal
+from datagundar.data.sap import SAP
 from getpass import getpass
 import platform
 import os
@@ -54,19 +55,50 @@ def JADWAL():
         print('Selected kelas is either not found or not supported yet')
     jd.close()
 
+def SATUAN_ACARA_PERKULIAHAN():
+    sap = SAP()
+    while True:
+        selectedJurusan = input('Input jurusan: ')
+        found = False
+
+        for fakultas, daftarJurusan in sap.getDaftarJurusan().items():
+            for jurusan in daftarJurusan:
+                if selectedJurusan in jurusan['jurName']:
+                    found = True
+                    print('Getting selected jurusan SAPs')
+                    sapList = sap.getSAPJurusan(selectedJurusan)
+                    clearScreen()
+                    semester = 0
+                    for sp in sapList:
+                        if semester != sp['sapSemester']:
+                            print('\nList of matkul for semester {}'.format(sp['sapSemester']))
+                            semester = sp['sapSemester']
+                        print('[{}] {} {} {}'.format(sp['sapCode'], sp['sapName'], sp['sapLocality'], sp['sapType']))
+                    break
+        
+        if found:
+            break
+        else:
+            print('Selected jurusan not found')
+    
+    sap.close()
+
 def MENU():
     while True:
         clearScreen()
         print('Pick one of these tasks that you want to be done:')
         print('(A) Check Upcoming Tasks')
         print('(B) Check Jadwal Kuliah')
-        opt = input('A or B ? ').strip()
+        print('(C) Check Satuan Acara Perkuliahan (SAP)')
+        opt = input('A, B, or C ? ').strip()
 
         clearScreen()
         if opt.upper() == 'A':
             VC()
         elif opt.upper() == 'B':
             JADWAL()
+        elif opt.upper() == 'C':
+            SATUAN_ACARA_PERKULIAHAN()
         else:
             print('Unkown answer: {}'.format(opt))
         input('Press any key to continue...')
