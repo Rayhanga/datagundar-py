@@ -16,7 +16,7 @@ Create new `virtualenv` and install depedencies:
 
     ```
     virtualenv venv
-    venv\Scripts\activate &&
+    venv\Scripts\activate
     pip install -r requirements.txt
     ```
 
