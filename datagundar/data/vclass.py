@@ -162,8 +162,8 @@ class Vclass(Proxy):
             for datum in data:
                 # TODO Get start date
                 if 'due' in datum.text:
-                    strip = datum.text.replace('The due date for posting to this forum is ', '').replace('.', '').replace(' ', '').replace('\n', '')
-                    deadline = datetime.datetime.strptime(strip, '%A,%d%B%Y,%I:%M%p')
+                    text = datum.text.strip().replace('The due date for posting to this forum', '').replace('is', '').replace('was', '').replace('.', '').replace(' ', '')
+                    deadline = datetime.datetime.strptime(text, '%A,%d%B%Y,%I:%M%p')
 
         # Update act dict
         act['actStart'] = start
