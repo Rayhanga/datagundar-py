@@ -11,7 +11,11 @@ def clearScreen():
     os.system('cls' if OS == 'Windows' else 'clear')
 
 def VC():
+    print('Initializing web proxy...')
     vc = Vclass()
+    time.sleep(2)
+    print('Web proxy intialized successfully')
+    clearScreen()
     while not vc.auth:
         vc.login(input('Username for vclass: '), getpass('Password for vclass: '))
         clearScreen()

@@ -176,14 +176,17 @@ class Vclass(Proxy):
         res = []
         for course in courses:
             topic_list = course['courseTopics']
-            for topic in topic_list[1:]:
-                activity_list = topic['topicActivities']
-                if activity_list:
-                    for activity in activity_list:
-                        if not activity['actComplete']:
-                            if not(activity['actType'] == 'File' or activity['actType'] == 'Chat'):
-                                activity['actTitle'] = activity['actTitle'] + ' ({})'.format(course['courseName'])
-                                res.append(self.getActDeadline(activity))
+            course_progress = course['courseProgress']
+            if course_progress:
+                if int(course_progress) < 100:
+                    for topic in topic_list[1:]:
+                        activity_list = topic['topicActivities']
+                        if activity_list:
+                            for activity in activity_list:
+                                if not activity['actComplete']:
+                                    if not(activity['actType'] == 'File' or activity['actType'] == 'Chat'):
+                                        activity['actTitle'] = activity['actTitle'] + ' ({})'.format(course['courseName'])
+                                        res.append(self.getActDeadline(activity))
         try:
             res = sorted(res, key=lambda k: k['actDeadline'])
         except:
