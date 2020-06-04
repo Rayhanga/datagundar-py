@@ -13,7 +13,6 @@ def clearScreen():
 def VC():
     print('Initializing web proxy...')
     vc = Vclass()
-    time.sleep(2)
     print('Web proxy intialized successfully')
     clearScreen()
     while not vc.auth:
@@ -41,7 +40,10 @@ def VC():
     vc.close()
 
 def JADWAL():
+    print('Initializing web proxy...')
     jd = Jadwal()
+    print('Web proxy intialized successfully')
+    clearScreen()
     jadwal = jd.getJadwalKelas(input('Input kelas: '))
     clearScreen()
     if jadwal:
@@ -60,7 +62,10 @@ def JADWAL():
     jd.close()
 
 def SATUAN_ACARA_PERKULIAHAN():
+    print('Initializing web proxy...')
     sap = SAP()
+    print('Web proxy intialized successfully')
+    clearScreen()
     while True:
         selectedJurusan = input('Input jurusan: ')
         found = False
