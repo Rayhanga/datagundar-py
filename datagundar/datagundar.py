@@ -6,6 +6,15 @@ import platform
 import os
 import time
 
+try:
+    db = os.sys.argv[1] == 'DEBUG'
+except:
+    db = False
+
+def debug(tic, toc):
+    if db:
+        print('Elapsed Time:', toc - tic)
+
 OS = platform.system()
 def clearScreen():
     os.system('cls' if OS == 'Windows' else 'clear')
@@ -22,7 +31,9 @@ def VC():
     time.sleep(2)
 
     print('Getting upcoming tasks')
+    tic = time.perf_counter()
     upcoming_tasks = vc.getUpcomingTasks()
+    toc = time.perf_counter()
     clearScreen()
  
     #============ TODO ============#
@@ -36,6 +47,8 @@ def VC():
         start = task['actStart'].strftime('%d-%m-%Y %H:%M:%S') if task['actStart'] else '???'
         deadline = task['actDeadline'].strftime('%d-%m-%Y %H:%M:%S') if task['actDeadline'] else '???'
         print('{}\nLINK: {}\nMULAI: {}\nDEADLINE: {}\n'.format(title, link, start, deadline))
+    
+    debug(tic, toc)
 
     vc.close()
 
@@ -44,7 +57,9 @@ def JADWAL():
     jd = Jadwal()
     print('Web proxy intialized successfully')
     clearScreen()
+    tic = time.perf_counter()
     jadwal = jd.getJadwalKelas(input('Input kelas: '))
+    toc = time.perf_counter()
     clearScreen()
     if jadwal:
         for hari, jadkul in jadwal.items():
@@ -57,6 +72,7 @@ def JADWAL():
 
                 print('|{}| {} @ {} ({})'.format(w, m, r, d))
             print()
+        debug(tic, toc)
     else:
         print('Selected kelas is either not found or not supported yet')
     jd.close()
@@ -75,7 +91,9 @@ def SATUAN_ACARA_PERKULIAHAN():
                 if selectedJurusan in jurusan['jurName']:
                     found = True
                     print('Getting selected jurusan SAPs')
+                    tic = time.perf_counter()
                     sapList = sap.getSAPJurusan(selectedJurusan)
+                    toc = time.perf_counter()
                     clearScreen()
                     semester = 0
                     for sp in sapList:
@@ -86,6 +104,8 @@ def SATUAN_ACARA_PERKULIAHAN():
                     break
         
         if found:
+            print()
+            debug(tic, toc)
             break
         else:
             print('Selected jurusan not found')

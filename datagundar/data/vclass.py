@@ -1,5 +1,9 @@
 from datagundar.utils.proxy import Proxy
 from bs4 import BeautifulSoup as bs
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 import datetime
 
 site = {
@@ -50,6 +54,13 @@ class Vclass(Proxy):
 
     def getCourseList(self):
         self.openPageOnAuth(self.site['DASHBOARD'])
+
+        try:
+            element_present = EC.presence_of_element_located((By.CLASS_NAME, 'coursename'))
+            WebDriverWait(self.driver, 3).until(element_present)
+        except TimeoutException:
+            pass
+
         sauce = bs(self.driver.page_source, 'html.parser')
         cList = sauce.findAll('li', {'class': 'course-listitem'})
         data = []
@@ -65,10 +76,7 @@ class Vclass(Proxy):
                 progress = None
 
             # Course name
-            try:
-                name = self.filterCourseName(cItem.text)
-            except:
-                name = None
+            name = self.filterCourseName(cItem.text)
 
             # Course link
             id = cItem.attrs.get('href')[-4:]
@@ -84,6 +92,13 @@ class Vclass(Proxy):
 
     def getCourseTopics(self, course):
         self.openPageOnAuth(self.site['COURSE']+'?id='+course['courseId'])
+
+        try:
+            element_present = EC.presence_of_element_located((By.CLASS_NAME, 'section'))
+            WebDriverWait(self.driver, 3).until(element_present)
+        except TimeoutException:
+            pass
+
         sauce = bs(self.driver.page_source, 'html.parser')
         courseTopics = []
         topics = sauce.findAll('li', {'class': 'section main clearfix'})

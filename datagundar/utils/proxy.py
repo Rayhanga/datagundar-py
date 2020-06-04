@@ -33,7 +33,6 @@ class Proxy:
         # Open a page only if authenticated
         if self.auth:
             self.driver.get(url)
-            time.sleep(3)
 
     def openPage(self, url):
         # Open a page regardless logged in or not

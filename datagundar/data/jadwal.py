@@ -1,5 +1,9 @@
 from datagundar.utils.proxy import Proxy
 from bs4 import BeautifulSoup as bs
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 import datetime
 
 site = {
@@ -37,6 +41,13 @@ class Jadwal(Proxy):
     # Get Jadwal Perkuliahan
     def getJadwalKelas(self, kelas):
         self.openPage(site['JADKUL'](kelas))
+        
+        try:
+            element_present = EC.presence_of_element_located((By.TAG_NAME, 'table'))
+            WebDriverWait(self.driver, 3).until(element_present)
+        except TimeoutException:
+            pass
+
         sauce = bs(self.driver.page_source, 'html.parser')
         rows = sauce.findAll('tr')[1:]
         res = {}

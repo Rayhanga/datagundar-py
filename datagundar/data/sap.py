@@ -1,5 +1,9 @@
 from datagundar.utils.proxy import Proxy
 from bs4 import BeautifulSoup as bs
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 import time
 
 site = {
@@ -12,6 +16,13 @@ class SAP(Proxy):
 
     def getDaftarJurusan(self):
         self.openPage(self.site['MAIN'])
+
+        try:
+            element_present = EC.presence_of_element_located((By.LINK_TEXT, 'Daftar SAP'))
+            WebDriverWait(self.driver, 3).until(element_present)
+        except TimeoutException:
+            pass
+        
         self.driver.find_element_by_link_text('Daftar SAP').click()
         res = {}
 
@@ -37,19 +48,49 @@ class SAP(Proxy):
     def getSAPJurusan(self, jurusan):
         jurusan = jurusan.strip()
         self.openPage(self.site['MAIN'])
+
+        try:
+            element_present = EC.presence_of_element_located((By.LINK_TEXT, 'Daftar SAP'))
+            WebDriverWait(self.driver, 3).until(element_present)
+        except TimeoutException:
+            pass
+
         self.driver.find_element_by_link_text('Daftar SAP').click()
-        time.sleep(1)
+
+        try:
+            element_present = EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, jurusan))
+            WebDriverWait(self.driver, 3).until(element_present)
+        except TimeoutException:
+            pass
+
         self.driver.find_element_by_partial_link_text(jurusan).click()
-        time.sleep(1)
+
+        try:
+            element_present = EC.presence_of_element_located((By.ID, 'dafsap'))
+            WebDriverWait(self.driver, 3).until(element_present)
+        except TimeoutException:
+            pass
 
         res = []
 
         sauce = bs(self.driver.page_source, 'html.parser')
         for i, item in enumerate(sauce.findAll('tr')[1:]):
-            detailLinks = self.driver.find_elements_by_partial_link_text('Details')
 
+            try:
+                element_present = EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, 'Details'))
+                WebDriverWait(self.driver, 3).until(element_present)
+            except TimeoutException:
+                pass
+
+            detailLinks = self.driver.find_elements_by_partial_link_text('Details')
             detailLinks[i].click()
-            time.sleep(1)
+
+            try:
+                element_present = EC.presence_of_element_located((By.CLASS_NAME, 'col-md-12'))
+                WebDriverWait(self.driver, 3).until(element_present)
+            except TimeoutException:
+                pass
+
             detailSauce = bs(self.driver.page_source, 'html.parser')
 
             details = detailSauce.find('div', {'class': 'col-md-12'}).findChildren('tr')[:-1]
@@ -82,7 +123,6 @@ class SAP(Proxy):
             })
             
             self.driver.back()
-            time.sleep(1)
 
         try: 
             res = sorted(res, key=lambda k: k['sapSemester'])
