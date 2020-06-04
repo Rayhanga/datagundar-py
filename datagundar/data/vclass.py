@@ -65,7 +65,10 @@ class Vclass(Proxy):
                 progress = None
 
             # Course name
-            name = self.filterCourseName(cItem.text)
+            try:
+                name = self.filterCourseName(cItem.text)
+            except:
+                name = None
 
             # Course link
             id = cItem.attrs.get('href')[-4:]
