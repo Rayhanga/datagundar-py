@@ -94,7 +94,7 @@ class Vclass(Proxy):
         self.openPageOnAuth(self.site['COURSE']+'?id='+course['courseId'])
 
         try:
-            element_present = EC.presence_of_element_located((By.CLASS_NAME, 'section'))
+            element_present = EC.presence_of_element_located((By.CLASS_NAME, 'topics'))
             WebDriverWait(self.driver, 3).until(element_present)
         except TimeoutException:
             pass
