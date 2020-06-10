@@ -1,4 +1,4 @@
-import datagundar.datagundar
+import datagundar.app as app
 
-datagundar.datagundar.MENU()
-datagundar.datagundar.clearScreen()
+app.MENU()
+app.clearScreen()
