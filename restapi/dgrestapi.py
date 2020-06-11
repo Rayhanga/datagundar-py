@@ -4,11 +4,10 @@ from datagundar import Jadwal, SAP, Vclass
 
 app = Flask('DataGundar REST API')
 
-@app.before_request
-def only_json():
-    if not request.is_json:     
-        return abort(400)
-
+# @app.before_request
+# def only_json():
+#     if not request.is_json:     
+#         return abort(400)
 
 @app.errorhandler(HTTPException)
 def handleException(e):

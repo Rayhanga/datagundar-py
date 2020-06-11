@@ -1,11 +1,9 @@
 from selenium import webdriver
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.firefox.options import Options
 import time
 
 class Proxy:
     def __init__(self, site):
-        options = Options()
+        options = webdriver.FirefoxOptions()
         options.headless = True
         self.auth = False
         self.driver = webdriver.Firefox(options=options)
