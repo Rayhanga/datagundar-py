@@ -56,87 +56,32 @@ Always use `virtualenv` when interacting with these modules
   . venv/bin/activate
   ```
 
-### Run on terminal
+### As a CLI
 
 ```
 python -m datagundar
 ```
 
+### As a REST API server:
+
+To startup the development server use:
+
+```
+python -m restapi
+```
+
+For production server use `gunicorn` or any other WSGI.
+
+```bash
+# Example deployment with gunicorn
+gunicorn restapi:app
+```
+
+For more documentation on available API please refer to [`restapi` README.md](https://github.com/Rayhanga/DataGundar/blob/master/restapi/README.md)
+
 ### As a python module
 
-`datagundar` has multiple modules, each modules will create a new _headless proxy_ of it's own. And each modules are a Class inherited from the `Proxy` Class.
-
-```python
-from datagundar import Jadwal
-from datagundar import SAP
-from datagundar import Vclass
-
-Jadwal.getJadwalKelas(kelas)
-# returns a dictionary of jadwal for selected kelas
-
-# Data Structure:
-{
-  Hari: [
-    {
-      'waktu': String,
-      'matkul': String,
-      'ruang': String,
-      'dosen': String
-    },
-    ...
-  ],
-  ...
-}
-
-
-SAP.getDaftarJurusan()
-# returns a dictionary of available Jurusan
-
-# Data Structure:
-{
-  Fakultas: [
-    {
-      'jurName': String,
-      'jurDegree': String,
-    },
-    ...,
-  ],
-  ...
-}
-
-SAP.getSAPJurusan(jurusan)
-# returns a list of SAPs for selected jurusan 
-# (sorted from the smallest sapSemester)
-
-# Data Structure:
-[
-  {
-    'sapCode': String,
-    'sapName': String,
-    'sapSemester': String,
-    'sapLocality': String,
-    'sapType': String
-  },
-  ...
-]
-
-
-Vclass.getUpcomingTasks()
-# returns a list of upcoming tasks
-# (sorted from the nearest deadline)
-
-[
-  {
-    'actTitle': String,
-    'actLink': String,
-    'actType': String,
-    'actComplete': String,
-    'actStart': datetime,
-    'actDeadline': datetime
-  },
-  ...
-]
-```
+Please refer to [`datagundar` README.md](https://github.com/Rayhanga/DataGundar/blob/master/datagundar/README.md)
 
 ## Contributing
 
