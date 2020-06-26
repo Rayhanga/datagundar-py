@@ -196,15 +196,15 @@ class Vclass(Proxy):
             topic_list = course['courseTopics']
             course_progress = course['courseProgress']
             if course_progress:
-                if int(course_progress) < 100:
-                    for topic in topic_list[1:]:
-                        activity_list = topic['topicActivities']
-                        if activity_list:
-                            for activity in activity_list:
-                                if not activity['actComplete']:
-                                    if not(activity['actType'] == 'File' or activity['actType'] == 'Chat'):
-                                        activity['actTitle'] = activity['actTitle'] + ' ({})'.format(course['courseName'])
-                                        res.append(self.getActDeadline(activity))
+                for topic in topic_list[1:]:
+                    activity_list = topic['topicActivities']
+                    if activity_list:
+                        for activity in activity_list:
+                            if not activity['actComplete']:
+                                if not(activity['actType'] == 'File' or activity['actType'] == 'Chat'):
+                                    activity['actTitle'] = activity['actTitle'] + ' ({})'.format(course['courseName'])
+                                    res.append(self.getActDeadline(activity))
+
         try:
             res = sorted(res, key=lambda k: k['actDeadline'])
         except:
@@ -212,7 +212,8 @@ class Vclass(Proxy):
             for i, task in enumerate(res):
                 if not task['actDeadline']:
                     temp.append(task)
-            res = sorted([a for a in res if a not in temp], key=lambda k: k['actDeadline']) + temp
+            res = sorted([a for a in res if a not in temp], key=lambda k: k['actDeadline'])
+            res = [a for a in res if a['actDeadline'] >= datetime.datetime.today()] + temp
             
         return res
 
