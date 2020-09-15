@@ -201,8 +201,9 @@ class Vclass(Proxy):
                     if activity_list:
                         for activity in activity_list:
                             if not activity['actComplete']:
-                                if not(activity['actType'] == 'File' or activity['actType'] == 'Chat'):
+                                if not(activity['actType'] == 'File' or activity['actType'] == 'Chat' or activity['actType'] == 'URL'):
                                     activity['actTitle'] = activity['actTitle'] + ' ({})'.format(course['courseName'])
+                                    print(activity)
                                     res.append(self.getActDeadline(activity))
 
         try:
