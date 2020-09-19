@@ -1,9 +1,5 @@
 from proxy import OpenWeb
 
-from definitions import DATA_DIR
-import datamanager
-
-import os
 import re
 
 def getCourseList(proxy):

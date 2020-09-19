@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 from vclass import getCourseData
+from fakultas import getFakultasList, getMajorSAP
 
 class Credentials(BaseModel):
     username: str
@@ -11,10 +12,18 @@ class Credentials(BaseModel):
 app = FastAPI()
 
 @app.post("/api/vclass/")
-async def getVclassData(credentials: Credentials, modifiedData: Optional[dict] = None):
+async def vclassData(credentials: Credentials):
     return getCourseData(credentials)
 
-@app.get("/api/jadwal/{kelas}")
-async def getJadwalKelas(kelas: str):
+@app.get("/api/fakultas/")
+async def fakultasList():
+    return getFakultasList()
+
+@app.get("api/sap/{fakultas}/")
+async def fakultasSap(fakultas: str):
+    return getMajorSAP(fakultas)
+
+@app.get("/api/jadwal/{kelas}/")
+async def jadwalKelas(kelas: str):
     kelas = kelas.upper()
     return(kelas)

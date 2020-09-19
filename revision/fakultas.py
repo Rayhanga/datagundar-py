@@ -1,9 +1,6 @@
 from proxy import OpenWeb
 
-from definitions import SAP_DIR
-
 import re
-import os
 
 website = {
     'MAIN': 'https://sap.gunadarma.ac.id/'
@@ -29,8 +26,7 @@ def getFakultasList():
         return result
 
 def getMajorSAP(majorName):
-    downloadDir = os.path.join(SAP_DIR, majorName.title().replace(' ', ''))
-    with OpenWeb(website, downloadDir=downloadDir) as proxy:
+    with OpenWeb(website) as proxy:
         result = []
 
         proxy.clickLink('Daftar SAP')
@@ -38,14 +34,26 @@ def getMajorSAP(majorName):
         proxy.clickLink(majorName)
         sapSauce = proxy.getSauce(expectedId='dafsap')
         for i, tr in enumerate(sapSauce.findAll('tr')[1:]):
-            sapData = [td for td in tr.findAll('td')]
+            proxy.waitForElement('Details')
+            detailLinks = proxy.driver.find_elements_by_partial_link_text('Details')
+            detailLinks[i].click()
+            detailSauce = proxy.getSauce(expectedClassName='col-md-12')
 
-            sapId = sapData[0].text
-            sapTitle = re.sub(r"(\/|\*+|#|\((\w|\d|\s)+\)|(RPS 2018))", "", sapData[1].text)
-            print(sapTitle)
+            sapData = detailSauce.findAll('td')
+            sapId = sapData[1].text
+            sapTitle = sapData[3].text
+            sapLocality = sapData[5].text
+            sapType = sapData[7].text
+            sapDescription = sapData[9].text
             
-    
-# for fakultas in getFakultasList():
-#     print(fakultas)
+            proxy.driver.back()
+            
+            result.append({
+                'sapID': sapId,
+                'sapTitle': sapTitle,
+                'sapLocality': sapLocality,
+                'sapType': sapType,
+                'sapDescription': sapDescription
+            })     
 
-getMajorSAP('Akuntansi S1')
+        return result

@@ -5,8 +5,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup as bs
 
-from definitions import SAP_DIR
-
 import logging
 import time
 
@@ -18,7 +16,7 @@ logging.basicConfig(
 
 
 class Proxy:
-    def __init__(self, website, credentials=None, headless=True, downloadDir=SAP_DIR):        
+    def __init__(self, website, credentials=None, headless=True):        
         self.website = website
         self.credentials = credentials
         self.auth = False
@@ -27,7 +25,6 @@ class Proxy:
             logging.debug('Trying Chrome webdriver')
             chromeOptions = webdriver.ChromeOptions()
             chromeOptions.headless = headless
-            chromeOptions.add_experimental_option('prefs', {'download.default_directory': downloadDir})
             self.driver = webdriver.Chrome(options=chromeOptions)
             logging.debug('Chrome webdriver initiated')
         except Exception as e:
@@ -37,13 +34,6 @@ class Proxy:
                 firefoxOptions = webdriver.FirefoxOptions()
                 firefoxOptions.headless = headless
                 firefoxProfile = webdriver.FirefoxProfile()
-                firefoxProfile.set_preference("browser.download.folderList", 2)
-                firefoxProfile.set_preference("browser.download.manager.showWhenStarting", False)
-                firefoxProfile.set_preference("browser.download.dir", downloadDir)
-                firefoxProfile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/pdf")
-                firefoxProfile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-                firefoxProfile.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/msword")
-                firefoxProfile.set_preference("browser.download.useDownloadDir", True)
                 self.driver = webdriver.Firefox(options=firefoxOptions, firefox_profile=firefoxProfile)
                 logging.debug('Firefox webdriver initiated')
             except Exception as e:
@@ -82,6 +72,13 @@ class Proxy:
             logging.info('Proxy successfully opened %s', url)
         else:
             logging.error('Proxy failed to open %s', url)
+
+    def waitForElement(self, partialLinkText):
+        try:
+            element_present = EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, partialLinkText))
+            WebDriverWait(self.driver, 3).until(element_present)
+        except TimeoutException:
+            pass
     
     def clickLink(self, buttonName):
         try:
@@ -127,8 +124,8 @@ class Proxy:
         logging.info('Proxy closed')
 
 class OpenWeb:
-    def __init__(self, website, credentials=None, headless=True, downloadDir=SAP_DIR):
-        self.proxy = Proxy(website, credentials, headless, downloadDir)
+    def __init__(self, website, credentials=None, headless=True):
+        self.proxy = Proxy(website, credentials, headless)
 
     def __enter__(self):
         self.proxy.openPage(self.proxy.website['MAIN'])
