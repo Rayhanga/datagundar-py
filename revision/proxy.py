@@ -92,7 +92,7 @@ class Proxy:
         logging.info('Proxy clicked "%s" link', buttonName)
         logging.info('Proxy url now at %s', self.driver.current_url)
     
-    def getSauce(self, expectedClassName=None, expectedId=None, expectedXpath=None):
+    def getSauce(self, expectedClassName=None, expectedId=None, expectedXpath=None, expectedTagName=None):
         if expectedClassName:
             try:
                 element_present = EC.presence_of_element_located((By.CLASS_NAME, expectedClassName))
@@ -111,6 +111,13 @@ class Proxy:
                 WebDriverWait(self.driver, 5).until(element_present)
             except TimeoutException:
                 logging.warning('Proxy timeout while trying to find element by ID: "%s"', expectedXpath)
+        if expectedTagName:
+            try:
+                element_present = EC.presence_of_element_located((By.TAG_NAME, expectedTagName))
+                WebDriverWait(self.driver, 3).until(element_present)
+            except TimeoutException:
+                logging.warning('Proxy timeout while trying to find element by ID: "%s"', expectedXpath)
+
 
         return bs(self.driver.page_source, 'html.parser')
 
