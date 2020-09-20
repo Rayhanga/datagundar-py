@@ -7,13 +7,19 @@ from bs4 import BeautifulSoup as bs
 
 import logging
 import time
+import os
+
+WORKDIR = os.path.abspath(os.getcwd())
+print(WORKDIR)
+
+if not os.path.exists(WORKDIR+'/log/'):
+    os.makedirs(WORKDIR+'/log')
 
 logging.basicConfig(
     level=logging.WARNING,
     format='%(asctime)s [%(module)s][%(funcName)s] %(levelname)s : %(message)s',
     datefmt='(%d/%m/%Y) %H:%M:%S'
 )
-
 
 class Proxy:
     def __init__(self, website, credentials=None, headless=True):        
@@ -34,7 +40,7 @@ class Proxy:
                 firefoxOptions = webdriver.FirefoxOptions()
                 firefoxOptions.headless = headless
                 firefoxProfile = webdriver.FirefoxProfile()
-                self.driver = webdriver.Firefox(options=firefoxOptions, firefox_profile=firefoxProfile)
+                self.driver = webdriver.Firefox(options=firefoxOptions, firefox_profile=firefoxProfile, service_log_path=WORKDIR+'/log/gecokdriver.log')
                 logging.debug('Firefox webdriver initiated')
             except Exception as e:
                 logging.debug('Firefox webdriver failed')
@@ -135,7 +141,10 @@ class OpenWeb:
         self.proxy = Proxy(website, credentials, headless)
 
     def __enter__(self):
-        self.proxy.openPage(self.proxy.website['MAIN'])
+        try:
+            self.proxy.openPage(self.proxy.website['MAIN'])
+        except:
+            pass
         return self.proxy
 
     def __exit__(self, exc_type, exc_val, exc_tb):

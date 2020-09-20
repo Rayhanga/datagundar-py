@@ -1,4 +1,4 @@
-from proxy import OpenWeb
+from utils.proxy import OpenWeb
 
 import re
 
